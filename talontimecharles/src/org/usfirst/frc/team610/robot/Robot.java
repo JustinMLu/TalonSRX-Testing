@@ -84,8 +84,8 @@ public class Robot extends IterativeRobot {
 			rightIntakeSpeed = 0;
 		}
 		
-		double leftSpeed = -(x + y);
-		double rightSpeed = -(x - y);
+		double leftSpeed = -(y + x); // -(y + x)
+		double rightSpeed = (y - x); //y - x
 		leftIntake.set(ControlMode.PercentOutput, leftIntakeSpeed);
 		rightIntake.set(ControlMode.PercentOutput, rightIntakeSpeed);
 		
