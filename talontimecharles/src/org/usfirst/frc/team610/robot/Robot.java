@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Joystick;
 public class Robot extends IterativeRobot {
 	TalonSRX leftIntake, rightIntake, rightDrive, leftDrive;
 	Joystick driver;
+	Joystick operator;
 	boolean pressed;
 	
 	double leftIntakeSpeed = 0, rightIntakeSpeed = 0;
@@ -27,15 +28,13 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		driver       = new Joystick(0);
+		operator     = new Joystick(1);
+		
 		leftIntake   = new TalonSRX(1);
 		rightIntake  = new TalonSRX(2);
 		rightDrive   = new TalonSRX(3);
 		leftDrive    = new TalonSRX(4);
 				
-		leftDrive.set(ControlMode.PercentOutput, 0);
-		rightDrive.set(ControlMode.PercentOutput, 0);
-		leftIntake.set(ControlMode.PercentOutput, 0);
-		rightIntake.set(ControlMode.PercentOutput, 0);
 	}
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
@@ -66,13 +65,24 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		
 		double x = driver.getRawAxis(2);
 		double y = driver.getRawAxis(1);
+		
 		if (driver.getRawButton(8)) {
-			leftIntakeSpeed = driver.getRawAxis(1);
-			rightIntakeSpeed = driver.getRawAxis(3);
-			x = 0; y=0;
-		}		
+			leftIntakeSpeed = -1;
+			rightIntakeSpeed = 1;
+		}
+		
+		else if (driver.getRawButton(7)) {
+			leftIntakeSpeed = 1;
+			rightIntakeSpeed = -1;
+		}
+		
+		else {
+			leftIntakeSpeed = 0;
+			rightIntakeSpeed = 0;
+		}
 		
 		double leftSpeed = -(x + y);
 		double rightSpeed = -(x - y);
@@ -90,18 +100,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		leftDrive.set(ControlMode.PercentOutput, 1);
-		rightDrive.set(ControlMode.PercentOutput, 1);
-		leftIntake.set(ControlMode.PercentOutput, 1);
-		rightIntake.set(ControlMode.PercentOutput, 1);
+
 	}
 	
 	@Override
 	public void disabledPeriodic(){
-		leftDrive.set(ControlMode.PercentOutput, 1);
-		rightDrive.set(ControlMode.PercentOutput, 1);
-		leftIntake.set(ControlMode.PercentOutput, 1);
-		rightIntake.set(ControlMode.PercentOutput, 1);
+		leftDrive.set(ControlMode.PercentOutput, 0);
+		rightDrive.set(ControlMode.PercentOutput, 0);
+		leftIntake.set(ControlMode.PercentOutput, 0);
+		rightIntake.set(ControlMode.PercentOutput, 0);
 	}
 }
 
