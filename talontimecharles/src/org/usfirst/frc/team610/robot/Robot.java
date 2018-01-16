@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.Joystick;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	
 	TalonSRX leftIntake, rightIntake, rightDrive, leftDrive;
-	Joystick driver;
-	Joystick operator;
+	Joystick driver, operator;
 	boolean pressed;
 	
 	double leftIntakeSpeed = 0, rightIntakeSpeed = 0;
@@ -69,6 +69,16 @@ public class Robot extends IterativeRobot {
 		double x = driver.getRawAxis(2);
 		double y = driver.getRawAxis(1);
 		
+		double leftSpeed = -(y + x); // -(y + x)
+		double rightSpeed = (y - x); //y - x
+		
+		leftIntake.set(ControlMode.PercentOutput, leftIntakeSpeed);
+		rightIntake.set(ControlMode.PercentOutput, rightIntakeSpeed);
+		
+		leftDrive.set(ControlMode.PercentOutput, leftSpeed);
+		rightDrive.set(ControlMode.PercentOutput, rightSpeed);
+		
+		
 		if (driver.getRawButton(8)) {
 			leftIntakeSpeed = -1;
 			rightIntakeSpeed = 1;
@@ -83,14 +93,6 @@ public class Robot extends IterativeRobot {
 			leftIntakeSpeed = 0;
 			rightIntakeSpeed = 0;
 		}
-		
-		double leftSpeed = -(y + x); // -(y + x)
-		double rightSpeed = (y - x); //y - x
-		leftIntake.set(ControlMode.PercentOutput, leftIntakeSpeed);
-		rightIntake.set(ControlMode.PercentOutput, rightIntakeSpeed);
-		
-		leftDrive.set(ControlMode.PercentOutput, leftSpeed);
-		rightDrive.set(ControlMode.PercentOutput, rightSpeed);
 
 		
 	}
